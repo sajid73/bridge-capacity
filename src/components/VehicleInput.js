@@ -10,7 +10,12 @@ import {
 import { knapsack } from "../hooks/knapsack";
 import { tollType, vehicleInput } from "../hooks/vehiclesWeight";
 
-const VehicleInput = ({ setStatus, setMaxToll, setTotalVehicle, setRemaining }) => {
+const VehicleInput = ({
+  setStatus,
+  setMaxToll,
+  setTotalVehicle,
+  setRemaining,
+}) => {
   const [show, setShow] = useState(false);
   const [vehicle, setVehicle] = useState();
   const [weight, setWeight] = useState(0);
@@ -42,26 +47,44 @@ const VehicleInput = ({ setStatus, setMaxToll, setTotalVehicle, setRemaining }) 
     };
     vehicleInput.push(newob);
     setStatus(true);
-    setTimeout(() => {
-      const onBridge = knapsack(vehicleInput, maxCapacity);
-      setMaxToll(onBridge.maxToll);
-      setTotalVehicle(onBridge.selectedVehicle.length);
-      console.log(onBridge);
-      onBridge.selectedVehicle.map(v => totalWeight = totalWeight + v.w);
-      console.log(totalWeight);
-      setRemaining(maxCapacity - totalWeight);
-      if(totalWeight === 0 || totalWeight < maxCapacity)
-      {
-        setStatus(true);
-        console.log("true");
-      }
-      else{
-        setStatus(false);
-        console.log("false");
-      }
-    }, 2000);
+    // assigning returned knapsack value (selected vehicles)
+    let onBridge = knapsack(vehicleInput, maxCapacity);
+    setMaxToll(onBridge.maxToll);
+    recalculate(onBridge, totalWeight);
+    console.log("Knapsack array: ");
+    console.log(onBridge.selectedVehicle);
+    console.log("Inputed arary: ");
     console.log(vehicleInput);
+
+    setTimeout(() => {
+      const found = vehicleInput.findIndex(
+        (element) => element === onBridge.selectedVehicle[0]
+      );
+      vehicleInput.splice(found, 1);
+      console.log(vehicleInput.length);
+      if (vehicleInput.length !== 0) {
+        onBridge = knapsack(vehicleInput, maxCapacity);
+        recalculate(onBridge, totalWeight);
+      } else {
+        setTotalVehicle(0);
+        setRemaining(maxCapacity);
+        setStatus("warning");
+      }
+    }, 10000);
     e.preventDefault();
+  };
+
+  const recalculate = (onBridge, totalWeight) => {
+    setTotalVehicle(onBridge.selectedVehicle.length);
+    // calculating total weight on bridge
+    onBridge.selectedVehicle.map((v) => (totalWeight = totalWeight + v.w));
+    setRemaining(maxCapacity - totalWeight);
+
+    if (totalWeight === 0 || totalWeight < maxCapacity) {
+      setStatus(true);
+    } else {
+      setStatus(false);
+    }
   };
   return (
     <Form onSubmit={handleSubmit}>
