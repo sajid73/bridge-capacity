@@ -16,7 +16,7 @@ const Home = () => {
         Bridge capacity maintaining
       </h1>
       <BridgeStatus status={status} />
-      <Row>
+      <Row style={{marginTop: '20vh'}}>
           <Col><VehicleInput setStatus={setStatus} setMaxToll={setMaxToll} setTotalVehicle={setTotalVehicle} setRemaining={setRemaining} /></Col>
           <Col><BridgeDetails  maxToll={maxToll} totalVehicle={totalVehicle} remaining={remaining} /></Col>
       </Row>

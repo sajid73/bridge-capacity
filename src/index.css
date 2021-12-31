@@ -5,6 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: url("./media/bg.jpg") no-repeat fixed center;
+  background-size: 100% 100%;
+  backdrop-filter: blur(4px);
+  min-height: 93.5vh;
 }
 
 code {
@@ -16,9 +20,14 @@ code {
 
 .submit_btn {
   padding: 0.5rem 1rem;
-  background-color: #4285f4;
+  background-color: #1976d2;
   color: white;
   font-weight: 600;
   border: none;
   border-radius: 5px;
+}
+
+.bridge_details {
+  font-size: 2rem;
+  font-weight: 500;
 }

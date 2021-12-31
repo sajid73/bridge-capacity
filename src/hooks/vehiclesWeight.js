@@ -1,4 +1,4 @@
-export const vehicleWeight = [];
+export const vehicleInput = [];
 
 export const tollType = [
     {

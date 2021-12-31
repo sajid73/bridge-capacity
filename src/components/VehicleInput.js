@@ -8,9 +8,9 @@ import {
   InputGroup
 } from "react-bootstrap";
 import { knapsack } from "../hooks/knapsack";
-import { tollType, vehicleWeight } from "../hooks/vehiclesWeight";
+import { tollType, vehicleInput } from "../hooks/vehiclesWeight";
 
-const VehicleInput = ({ setStatus, setMaxToll, setTotalVehicle }) => {
+const VehicleInput = ({ setStatus, setMaxToll, setTotalVehicle, setRemaining }) => {
   const [show, setShow] = useState(false);
   const [vehicle, setVehicle] = useState();
   const [weight, setWeight] = useState(0);
@@ -40,15 +40,16 @@ const VehicleInput = ({ setStatus, setMaxToll, setTotalVehicle }) => {
       w: weight,
       v: toll.toll,
     };
-    vehicleWeight.push(newob);
+    vehicleInput.push(newob);
     setStatus(true);
     setTimeout(() => {
-      const onBridge = knapsack(vehicleWeight, maxCapacity);
+      const onBridge = knapsack(vehicleInput, maxCapacity);
       setMaxToll(onBridge.maxToll);
       setTotalVehicle(onBridge.selectedVehicle.length);
       console.log(onBridge);
       onBridge.selectedVehicle.map(v => totalWeight = totalWeight + v.w);
       console.log(totalWeight);
+      setRemaining(maxCapacity - totalWeight);
       if(totalWeight === 0 || totalWeight < maxCapacity)
       {
         setStatus(true);
@@ -59,13 +60,12 @@ const VehicleInput = ({ setStatus, setMaxToll, setTotalVehicle }) => {
         console.log("false");
       }
     }, 2000);
-    // console.log(Math.floor(Math.random() * (vehicleWeight.length + 1)));
-    console.log(vehicleWeight);
+    console.log(vehicleInput);
     e.preventDefault();
   };
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-5" controlId="maxCapacity">
+      <Form.Group className="mb-5 text-white" controlId="maxCapacity">
         <Form.Label>Enter maximum capacity of the bridge</Form.Label>
         <Form.Control
           type="text"
@@ -74,7 +74,7 @@ const VehicleInput = ({ setStatus, setMaxToll, setTotalVehicle }) => {
           required
         />
       </Form.Group>
-      <InputGroup className="mb-3">
+      <InputGroup className="mb-3 bg-white">
         <DropdownButton
           variant="outline-secondary"
           title={vehicle || "Select vehicle type"}
