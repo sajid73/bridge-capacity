@@ -51,17 +51,12 @@ const VehicleInput = ({
     let onBridge = knapsack(vehicleInput, maxCapacity);
     setMaxToll(onBridge.maxToll);
     recalculate(onBridge, totalWeight);
-    console.log("Knapsack array: ");
-    console.log(onBridge.selectedVehicle);
-    console.log("Inputed arary: ");
-    console.log(vehicleInput);
 
     setTimeout(() => {
       const found = vehicleInput.findIndex(
         (element) => element === onBridge.selectedVehicle[0]
       );
       vehicleInput.splice(found, 1);
-      console.log(vehicleInput.length);
       if (vehicleInput.length !== 0) {
         onBridge = knapsack(vehicleInput, maxCapacity);
         recalculate(onBridge, totalWeight);
